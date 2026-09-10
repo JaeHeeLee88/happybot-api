@@ -30,4 +30,19 @@ def test_api():
     return {"result": "연동 성공!", "data": "클라우드 서버 통신 완료"}
 
 # 3. 다른 py 파일의 비즈니스 로직(건조기 제어 등) 라우터 등록
-# app.include_router(dryer_router)
+from dryer import router as dryer_router
+app.include_router(dryer_router)
+
+if __name__ == '__main__':
+    app.run(host='192.168.0.13', port=5000) # host를 192.168.0.13으로 지정
+
+# main.py
+
+@app.route('/', methods=['GET'])
+def home():
+    return "Happybot API Server is Running!"  # 서버 작동 여부 확인용
+
+@app.route('/api/calculate', methods=['POST'])
+def calculate():
+    # 안드로이드 요청 처리 로직
+    return jsonify({"result": "success"})
